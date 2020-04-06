@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"text/template"
 
 	"github.com/cedrickchee/snippetbox/pkg/models"
 )
@@ -81,8 +82,29 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Write the snippet data as a plain-text HTTP response body.
-	fmt.Fprintf(w, "%v", s)
+	// Create an instance of a templateData struct holding the snippet data.
+	data := &templateData{Snippet: s}
+
+	// Initialize a slice containing the paths to the show.page.tmpl file,
+	// plus the base layout and footer partial that we made earlier.
+	files := []string{
+		"./ui/html/show.page.tmpl",
+		"./ui/html/base.layout.tmpl",
+		"./ui/html/footer.partial.tmpl",
+	}
+
+	// Parse the template files...
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	// Pass in the templateData struct when executing the template.
+	err = ts.Execute(w, data)
+	if err != nil {
+		app.serverError(w, err)
+	}
 }
 
 // Add a createSnippet handler function.
