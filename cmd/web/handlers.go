@@ -15,7 +15,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	// Importantly, we then return from the handler. If we don't return the handler
 	// would keep executing and also write the 'Hello from SnippetBox' message.
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		app.notFound(w) // Use the notFound() helper
 		return
 	}
 
@@ -33,9 +33,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	// response to the user.
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
-
+		app.serverError(w, err) // Use the serverError() helper.
 		return
 	}
 
@@ -44,8 +42,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	// dynamic data that we want to pass in, which for now we'll leave as nil.
 	err = ts.Execute(w, nil)
 	if err != nil {
-		app.errorLog.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		app.serverError(w, err) // Use the serverError() helper.
 	}
 }
 
@@ -57,7 +54,7 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	// not found response.
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil || id < 1 {
-		http.NotFound(w, r)
+		app.notFound(w) // Use the notFound() helper.
 		return
 	}
 
@@ -80,7 +77,7 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 
 		// Use the http.Error() function to send a 405 status code and "Method Not
 		// Allowed" string as the response body.
-		http.Error(w, "Method Not Allowed", 405)
+		app.clientError(w, http.StatusMethodNotAllowed) // Use the clientError() helper.
 		return
 	}
 
