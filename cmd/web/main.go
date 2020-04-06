@@ -57,6 +57,18 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
+	// Set the maximum number of concurrently open connections. Setting this to
+	// less than or equal to 0 will mean there is no maximum limit. If the maximum
+	// number of open connections is reached and a new connection is needed, Go will
+	// wait until one of the connections is freed and becomes idle. From a
+	// user perspective, this means their HTTP request will hang until a connection
+	// is freed.
+	// db.SetMaxOpenConns(95)
+
+	// Set the maximum number of idle connections in the pool. Setting this
+	// to less than or equal to 0 will mean that no idle connections are retained.
+	// db.SetMaxIdleConns(5)
+
 	// We also defer a call to db.Close(), so that the connection pool is closed
 	// before the main() function exits.
 	defer db.Close()
