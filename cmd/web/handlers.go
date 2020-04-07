@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
+	"unicode/utf8"
 
 	"github.com/cedrickchee/snippetbox/pkg/models"
 )
@@ -100,6 +102,42 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	title := r.PostForm.Get("title")
 	content := r.PostForm.Get("content")
 	expires := r.PostForm.Get("expires")
+
+	// Initialize a map to hold any validation errors.
+	errors := make(map[string]string)
+
+	// Check that the title field is not blank and is not more than 100 characters
+	// long. If it fails either of those checks, add a message to the errors
+	// map using the field name as the key.
+	if strings.TrimSpace(title) == "" {
+		errors["title"] = "This field cannot be blank"
+	} else if utf8.RuneCountInString(title) > 100 {
+		errors["title"] = "This field is too long (maximum is 100 characters)"
+	}
+
+	// Check that the Content field isn't blank.
+	if strings.TrimSpace(content) == "" {
+		errors["content"] = "This field cannot be blank"
+	}
+
+	// Check the expires field isn't blank and matches one of the permitted
+	// values ('1', '7' or '365').
+	if strings.TrimSpace(expires) == "" {
+		errors["expires"] = "This field cannot be blank"
+	} else if expires != "365" && expires != "7" && expires != "1" {
+		errors["expires"] = "This field is invalid"
+	}
+
+	// If there are any validation errors, re-display the create.page.tmpl
+	// template passing in the validation errors and previously submitted
+	// r.PostForm data.
+	if len(errors) > 0 {
+		app.render(w, r, "create.page.tmpl", &templateData{
+			FormErrors: errors,
+			FormData:   r.PostForm,
+		})
+		return
+	}
 
 	// Create a new snippet record in the database using the form data by
 	// passing the data to the SnippetModel.Insert() method, receiving the
