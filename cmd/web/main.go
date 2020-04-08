@@ -118,10 +118,14 @@ func main() {
 	// the ErrorLog field so that the server now uses the custom errorLog logger in
 	// the event of any problems.
 	srv := &http.Server{
-		Addr:      *addr,
-		ErrorLog:  errorLog,
-		Handler:   app.routes(), // Call the new app.routes() method
-		TLSConfig: tlsConfig,
+		Addr:           *addr,
+		ErrorLog:       errorLog,
+		Handler:        app.routes(), // Call the new app.routes() method
+		TLSConfig:      tlsConfig,
+		IdleTimeout:    time.Minute,
+		ReadTimeout:    5 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 524288, // limit the maximum header length to 0.5MB
 	}
 
 	// Use the http.ListenAndServe() function to start a new web server. We pass in
