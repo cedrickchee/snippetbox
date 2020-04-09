@@ -35,6 +35,10 @@ func (app *application) routes() http.Handler {
 	mux.Post("/user/login", dynamicMiddleware.ThenFunc(app.loginUser))
 	mux.Post("/user/logout", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.logoutUser))
 
+	// Register the ping handler function as the handler for the GET /ping
+	// route.
+	mux.Get("/ping", http.HandlerFunc(ping))
+
 	// Create a file server which serves files out of the './ui/static' directory.
 	// Note that the path given to the http.Dir function is relative to the project
 	// directory root.
