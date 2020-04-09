@@ -97,6 +97,7 @@ func main() {
 	session := sessions.New([]byte(*secret))
 	session.Lifetime = 12 * time.Hour
 	session.Secure = true
+	session.SameSite = http.SameSiteStrictMode
 
 	// Initialize a new instance of application containing the dependencies.
 	app := &application{

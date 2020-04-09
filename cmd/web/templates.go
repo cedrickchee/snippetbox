@@ -20,6 +20,7 @@ type templateData struct {
 	Form              *forms.Form
 	Flash             string
 	AuthenticatedUser int
+	CSRFToken         string
 }
 
 // Create a humanDate function which returns a nicely formatted string
