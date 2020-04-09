@@ -23,8 +23,8 @@ func (app *application) routes() http.Handler {
 	mux.Get("/", dynamicMiddleware.ThenFunc(app.home)) // the pattern '/' is a special case.
 	// To ensure that the exact match takes preference, we need to register the
 	// exact match routes before any wildcard routes.
-	mux.Get("/snippet/create", dynamicMiddleware.ThenFunc(app.createSnippetForm))
-	mux.Post("/snippet/create", dynamicMiddleware.ThenFunc(app.createSnippet))
+	mux.Get("/snippet/create", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.createSnippetForm))
+	mux.Post("/snippet/create", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.createSnippet))
 	// Wildcard routes.
 	mux.Get("/snippet/:id", dynamicMiddleware.ThenFunc(app.showSnippet))
 
@@ -33,7 +33,7 @@ func (app *application) routes() http.Handler {
 	mux.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))
 	mux.Get("/user/login", dynamicMiddleware.ThenFunc(app.loginUserForm))
 	mux.Post("/user/login", dynamicMiddleware.ThenFunc(app.loginUser))
-	mux.Post("/user/logout", dynamicMiddleware.ThenFunc(app.logoutUser))
+	mux.Post("/user/logout", dynamicMiddleware.Append(app.requireAuthenticatedUser).ThenFunc(app.logoutUser))
 
 	// Create a file server which serves files out of the './ui/static' directory.
 	// Note that the path given to the http.Dir function is relative to the project
