@@ -7,5 +7,6 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golangcollege/sessions v1.2.0
 	github.com/justinas/alice v1.2.0
+	golang.org/x/crypto v0.0.0-20200317142112-1b76d66859c6
 	google.golang.org/api v0.21.0 // indirect
 )
