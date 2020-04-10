@@ -42,3 +42,17 @@ $ make dev
 ```
 
 To run the tests, run `make test`.
+
+## Dependencies
+
+This project is all based on the standard library. You don't need a framework to build web applications in Go. Go's standard library contains almost all the tools that you need, even for a moderately complex application. The book teaches you to build web applications using the standard library (rather than using a specific framework like Echo, Chi or Gin). A few small external packages are used where it makes sense for security reasons and to reduce complexity.
+
+## Recommended Minor Changes
+
+Feel free to carry on playing around with the project and trying to extend it further. You might like to try:
+- Adding a new "About" page to the website.
+- Increasing code coverage by adding more unit and integration tests.
+- Creating an API endpoint which returns a JSON representation of a snippet.
+- Adding functionality to confirm a user’s email address on signup.
+- Adding functionality for a user to reset their password.
+- Creating a command line application under `cmd/cli` to carry out database admin tasks.
