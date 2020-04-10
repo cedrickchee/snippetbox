@@ -56,3 +56,12 @@ Feel free to carry on playing around with the project and trying to extend it fu
 - Adding functionality to confirm a user’s email address on signup.
 - Adding functionality for a user to reset their password.
 - Creating a command line application under `cmd/cli` to carry out database admin tasks.
+
+## Things I Learned
+
+- Go for web development using just the standard library.
+- How to start small and iteratively improve the codebase by refactoring.
+- How to structure a project and create testable packages.
+- How to create **maintainable** web applications.
+- Basic web security.
+- How HTTPS works.
