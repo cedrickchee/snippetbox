@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/img/screenshot.png" alt="Snippetbox" width="500"/>
+</p>
+
 # Snippetbox
 
 This application was developed by following the [Let's Go book by Alex Edwards](https://lets-go.alexedwards.net/).
